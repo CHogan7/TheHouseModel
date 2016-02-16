@@ -1,0 +1,381 @@
+package com.neumont.csc150.model;
+
+public class Entity {
+	public static final int STARTING_LEVEL = 0;
+	public static final int STARTING_EXP = 0;
+	public static final int DEFAULT_EXP = 1;
+	public static final int LEVELUP_VALUE = 100;
+	public static final double DIVISION_RATE = 2.0;
+	public static final int DEATH_VALUE = 0;
+	public static final double BASE_MOD = 1.0;
+//	/// Direction Values ///
+	public static final int NORTH = 0;
+	public static final int EAST = 1;
+	public static final int SOUTH = 2;
+	public static final int WEST = 3;
+//	/// Properties & Stats ///
+	private String name;
+	private int hostile;
+	private boolean alive;
+	private int level;
+	private int exp;
+	private int health;
+	private int healthMax;
+	private int atk;
+	private double weaponAtkMod;
+	private double armorAtkMod;
+	private double accAtkMod;
+	private int def;
+	private double weaponDefMod;
+	private double armorDefMod;
+	private double accDefMod;
+	private int spd;
+	private double weaponSpdMod;
+	private double armorSpdMod;
+	private double accSpdMod;
+	private int xCoord;
+	private int yCoord;
+	private Tile location;
+	private Tile targetTile;
+	private int direction;
+	
+	/**
+	 * Only used to initialize Tile objects; cannot be used for combat, targeting, or interaction. Getters will return a null value.
+	 */
+	public Entity() {
+		this.setName("None");
+		this.setHostile(0);
+		this.setAlive(false);
+		
+	}
+	
+	/**
+	 * Creates an instance of either a friendly character or an enemy.
+	 * By default, player-aligned entities will have a value of 0, with enemies having a value of 1-9 to allow warring enemy factions.
+	 * Entities that have a matching hostile value cannot harm one another.
+	 * An example initial stat spread for a basic Entity would be 1000 health, 200 atk, 200 def, 100 spd.
+	 * @param name
+	 * @param hostile
+	 * @param health
+	 * @param atk
+	 * @param def
+	 * @param spd
+	 */
+	public Entity(String name, int hostile, int health, int atk, int def, int spd) {
+		this.setName(name);
+		this.setHostile(hostile);
+		this.setAlive(true);
+		this.setLevel(STARTING_LEVEL);
+		this.setExp(STARTING_EXP);
+		this.setHealth(health);
+		this.setHealthMax(health);
+		this.setAtk(atk);
+		this.setWeaponAtkMod(BASE_MOD);
+		this.setArmorAtkMod(BASE_MOD);
+		this.setAccAtkMod(BASE_MOD);
+		this.setDef(def);
+		this.setWeaponDefMod(BASE_MOD);
+		this.setArmorDefMod(BASE_MOD);
+		this.setAccDefMod(BASE_MOD);
+		this.setSpd(spd);
+		this.setWeaponSpdMod(BASE_MOD);
+		this.setArmorSpdMod(BASE_MOD);
+		this.setAccSpdMod(BASE_MOD);
+		
+	}
+	
+	/**
+	 * A levelling method that is designed to be triggered at the end of each turn; hostiles check if they can level up as well.
+	 * It is recommended to allow this method to call repeatedly after a turn if a kill grants enough exp to do so.
+	 */
+	public void checkExp() {
+		int remainder = getExp() - LEVELUP_VALUE;
+		
+		if (getExp() >= LEVELUP_VALUE) {
+			setLevel(getLevel() + 1);
+			setExp(remainder);
+			setHealthMax((int)(getHealthMax() + (getHealthMax() * (Math.random() / 2))));
+			setHealth(getHealthMax());
+			setAtk((int)(getAtk() + (getAtk() * (Math.random() / DIVISION_RATE))));
+			setDef((int)(getDef() + (getDef() * (Math.random() / DIVISION_RATE))));
+			setSpd((int)(getSpd() + (getSpd() * (Math.random() / DIVISION_RATE))));
+			
+		}
+		
+	}
+	
+	/**
+	 * A method primarily called by the attack method.
+	 * Exp-giving items (if implemented) count as an Entity that can exist within a player's inventory.
+	 * @param foe
+	 */
+	public void addExp(Entity foe) {
+		int exp = DEFAULT_EXP + (foe.getAtk() / getAtk()) + (foe.getDef() / getDef()) + (foe.getSpd() / getSpd());
+		
+		setExp(getExp() + exp);
+		
+	}
+	
+	/**
+	 * Damage formula uses the Entity's Power and the Foe's Resistance to calculate Damage, which is subtracted from the foe's health.
+	 * Killing blows are accounted for, and grant experience.
+	 * @param foe
+	 */
+	public void attack(Entity foe) {
+		int eAtk = (int)(getAtk() * getWeaponAtkMod() * getArmorAtkMod() * getAccAtkMod());
+		int eSpd = (int)(getSpd() * getWeaponSpdMod() * getArmorSpdMod() * getAccSpdMod());
+		int fDef = (int)(foe.getDef() * foe.getWeaponDefMod() * foe.getArmorDefMod() * foe.getAccDefMod());
+		int fSpd = (int)(foe.getSpd() * foe.getWeaponSpdMod() * foe.getArmorSpdMod() * foe.getAccSpdMod());
+		int pow = (eAtk + eSpd);
+		int res = (fDef + fSpd);
+		int dmg = getAtk() - (res - pow);
+		
+		if (dmg <= 0) {
+			dmg = 1;
+			
+		}
+		
+		foe.setHealth(foe.getHealth() - dmg);
+		
+		if (foe.getHealth() <= DEATH_VALUE) {
+			foe.setAlive(false);
+			addExp(foe);
+			
+		}
+		
+	}
+	
+	/**
+	 * Method that allows for the game to keep track of which direction a character is facing.
+	 * Only valuable if AOE or direction-based mechanics are implemented.
+	 */
+	public void updateDirection() {
+		// It got late I didn't have time to code this you get the gist
+		
+	}
+	
+	/**
+	 * The equals method now facilitates friend-or-foe designation.
+	 * Determining enemies this way allows for several factions to exist.
+	 * Because chaos! >:D
+	 */
+	public boolean equals(Object object) {
+		Entity entity;
+		
+		if (object instanceof Entity) {
+			entity = (Entity)object;
+			
+			return isHostile() == entity.isHostile();
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * Allows for the display of a player's basic stats for a status panel.
+	 */
+	public String toString() {
+		
+		return getName() + ": Lv" + getLevel() + " HP:" + getHealth() + "/" + getHealthMax();
+	}
+	
+//	/// Getters and Setters ///
+//	// Properties
+	
+	public String getName() {
+		return name;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public int isHostile() {
+		return hostile;
+	}
+	
+	public void setHostile(int hostile) {
+		this.hostile = hostile;
+	}
+	
+	public boolean isAlive() {
+		return alive;
+	}
+	
+	public void setAlive(boolean alive) {
+		this.alive = alive;
+	}
+	
+//	// Stats
+	
+	public int getLevel() {
+		return level;
+	}
+	
+	public void setLevel(int level) {
+		this.level = level;
+	}
+	
+	public int getExp() {
+		return exp;
+	}
+
+	public void setExp(int exp) {
+		this.exp = exp;
+	}
+
+	public int getHealth() {
+		return health;
+	}
+	
+	public void setHealth(int health) {
+		this.health = health;
+	}
+	
+	public int getHealthMax() {
+		return healthMax;
+	}
+	
+	public void setHealthMax(int healthMax) {
+		this.healthMax = healthMax;
+	}
+	
+	public int getAtk() {
+		return atk;
+	}
+	
+	public void setAtk(int atk) {
+		this.atk = atk;
+	}
+	
+	public double getWeaponAtkMod() {
+		return weaponAtkMod;
+	}
+	
+	public void setWeaponAtkMod(double atkMod) {
+		this.weaponAtkMod = atkMod;
+	}
+	
+	public double getArmorAtkMod() {
+		return armorAtkMod;
+	}
+
+	public void setArmorAtkMod(double armorAtkMod) {
+		this.armorAtkMod = armorAtkMod;
+	}
+
+	public double getAccAtkMod() {
+		return accAtkMod;
+	}
+
+	public void setAccAtkMod(double accAtkMod) {
+		this.accAtkMod = accAtkMod;
+	}
+
+	public int getDef() {
+		return def;
+	}
+	
+	public void setDef(int def) {
+		this.def = def;
+	}
+	
+	public double getWeaponDefMod() {
+		return weaponDefMod;
+	}
+
+	public void setWeaponDefMod(double weaponDefMod) {
+		this.weaponDefMod = weaponDefMod;
+	}
+
+	public double getArmorDefMod() {
+		return armorDefMod;
+	}
+
+	public void setArmorDefMod(double armorDefMod) {
+		this.armorDefMod = armorDefMod;
+	}
+
+	public double getAccDefMod() {
+		return accDefMod;
+	}
+
+	public void setAccDefMod(double accDefMod) {
+		this.accDefMod = accDefMod;
+	}
+
+	public int getSpd() {
+		return spd;
+	}
+	
+	public void setSpd(int spd) {
+		this.spd = spd;
+	}
+
+	public double getWeaponSpdMod() {
+		return weaponSpdMod;
+	}
+
+	public void setWeaponSpdMod(double weaponSpdMod) {
+		this.weaponSpdMod = weaponSpdMod;
+	}
+
+	public double getArmorSpdMod() {
+		return armorSpdMod;
+	}
+
+	public void setArmorSpdMod(double armorSpdMod) {
+		this.armorSpdMod = armorSpdMod;
+	}
+
+	public double getAccSpdMod() {
+		return accSpdMod;
+	}
+
+	public void setAccSpdMod(double accSpdMod) {
+		this.accSpdMod = accSpdMod;
+	}
+	
+//	// Position
+
+	public int getxCoord() {
+		return xCoord;
+	}
+
+	public void setxCoord(int xCoord) {
+		this.xCoord = xCoord;
+	}
+
+	public int getyCoord() {
+		return yCoord;
+	}
+
+	public void setyCoord(int yCoord) {
+		this.yCoord = yCoord;
+	}
+
+	public Tile getLocation() {
+		return location;
+	}
+
+	public void setLocation(Tile location) {
+		this.location = location;
+	}
+
+	public Tile getTargetTile() {
+		return targetTile;
+	}
+
+	public void setTargetTile(Tile targetTile) {
+		this.targetTile = targetTile;
+	}
+
+	public int getDirection() {
+		return direction;
+	}
+
+	public void setDirection(int direction) {
+		this.direction = direction;
+	}
+
+}
