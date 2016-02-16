@@ -37,7 +37,7 @@ public class Entity {
 	private int yCoord;
 	private Tile location;
 	private Tile targetTile;
-	private int direction;
+	private Direction direction;
 	
 	/**
 	 * Only used to initialize Tile objects; cannot be used for combat, targeting, or interaction. Getters will return a null value.
@@ -370,11 +370,11 @@ public class Entity {
 		this.targetTile = targetTile;
 	}
 
-	public int getDirection() {
+	public Direction getDirection() {
 		return direction;
 	}
 
-	public void setDirection(int direction) {
+	public void setDirection(Direction direction) {
 		this.direction = direction;
 	}
 
