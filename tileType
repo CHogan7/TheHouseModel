@@ -1,0 +1,5 @@
+public enum tileType{
+  FLOOR,
+  WALL,
+  DOOR;
+}
