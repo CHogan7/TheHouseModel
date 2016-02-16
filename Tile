@@ -1,0 +1,135 @@
+package com.neumont.csc150.model;
+
+import com.neumont.csc150.exceptions.InvalidTileException;
+
+public class Tile {
+	public static final Entity NONE = new Entity();
+	private Entity occupant;
+	private boolean passable;
+	private boolean occupied;
+	private int type;
+	private int xCoord;
+	private int yCoord;
+	
+	/**
+	 * A grid space on the map.
+	 * Integer values can be used as serial ID numbers for floors, walls, and doors.
+	 * If the assets exist, radiant room appearances can occur in cooresponding sets of three.
+	 * The current setup takes advantage of staggered sets, which allocate values within a range to their respective type.
+	 * This can be changed if the setup is undesirable with little effort.
+	 * Doors can be made to "unlock", upon reaching certain criteria, by setting their passable value to true.
+	 */
+	public Tile(int type, int xCoord, int yCoord) throws InvalidTileException {
+		this.setType(type);
+		this.setxCoord(xCoord);
+		this.setyCoord(yCoord);
+		
+		switch (type) {
+		case 0:
+		case 1:
+		case 2:
+		case 3:
+		case 4:
+		case 5:
+		case 6:
+		case 7:
+		case 8:
+		case 9:
+//			/// Floors ///
+			this.setOccupant(NONE);
+			this.setPassable(true);
+			this.setOccupied(false);
+			
+			break;
+		case 10:
+		case 11:
+		case 12:
+		case 13:
+		case 14:
+		case 15:
+		case 16:
+		case 17:
+		case 18:
+		case 19:
+//			/// Walls ///
+			this.setOccupant(NONE);
+			this.setPassable(false);
+			this.setOccupied(false);
+			
+			break;
+		case 20:
+		case 21:
+		case 22:
+		case 23:
+		case 24:
+		case 25:
+		case 26:
+		case 27:
+		case 28:
+		case 29:
+//			/// Doors ///
+			this.setOccupant(NONE);
+			this.setPassable(false);
+			this.setOccupied(false);
+			
+			break;
+		}
+		
+		if (this.getOccupant() == null) {
+			throw new InvalidTileException();
+			
+		}
+		
+	}
+	
+//	/// Getters and Setters ///
+
+	public Entity getOccupant() {
+		return occupant;
+	}
+
+	public void setOccupant(Entity occupant) {
+		this.occupant = occupant;
+	}
+
+	public boolean isPassable() {
+		return passable;
+	}
+
+	public void setPassable(boolean passable) {
+		this.passable = passable;
+	}
+
+	public boolean isOccupied() {
+		return occupied;
+	}
+
+	public void setOccupied(boolean occupied) {
+		this.occupied = occupied;
+	}
+
+	public int getType() {
+		return type;
+	}
+	
+	public void setType(int type) {
+		this.type = type;
+	}
+
+	public int getxCoord() {
+		return xCoord;
+	}
+
+	public void setxCoord(int xCoord) {
+		this.xCoord = xCoord;
+	}
+
+	public int getyCoord() {
+		return yCoord;
+	}
+
+	public void setyCoord(int yCoord) {
+		this.yCoord = yCoord;
+	}
+
+}
