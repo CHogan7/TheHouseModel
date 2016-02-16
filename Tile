@@ -10,6 +10,8 @@ public class Tile {
 	private int type;
 	private int xCoord;
 	private int yCoord;
+	private tileBiome biome;
+	private tileType type;
 	
 	/**
 	 * A grid space on the map.
@@ -19,59 +21,18 @@ public class Tile {
 	 * This can be changed if the setup is undesirable with little effort.
 	 * Doors can be made to "unlock", upon reaching certain criteria, by setting their passable value to true.
 	 */
-	public Tile(int type, int xCoord, int yCoord) throws InvalidTileException {
-		this.setType(type);
+	public Tile(tileType type, tileBiome biome; int xCoord, int yCoord) throws InvalidTileException {
+		
 		this.setxCoord(xCoord);
 		this.setyCoord(yCoord);
+		this.setTileBiome(biome);
+		this.setTileType(type);
 		
-		switch (type) {
-		case 0:
-		case 1:
-		case 2:
-		case 3:
-		case 4:
-		case 5:
-		case 6:
-		case 7:
-		case 8:
-		case 9:
-//			/// Floors ///
-			this.setOccupant(NONE);
-			this.setPassable(true);
-			this.setOccupied(false);
-			
-			break;
-		case 10:
-		case 11:
-		case 12:
-		case 13:
-		case 14:
-		case 15:
-		case 16:
-		case 17:
-		case 18:
-		case 19:
-//			/// Walls ///
-			this.setOccupant(NONE);
-			this.setPassable(false);
-			this.setOccupied(false);
-			
-			break;
-		case 20:
-		case 21:
-		case 22:
-		case 23:
-		case 24:
-		case 25:
-		case 26:
-		case 27:
-		case 28:
-		case 29:
-//			/// Doors ///
-			this.setOccupant(NONE);
-			this.setPassable(false);
-			this.setOccupied(false);
-			
+		switch(type){
+		case tileType.FLOOR:
+		case tileType.WALL:
+		case tileType.DOOR:
+		/*-------------------------------fix this --------------------------------------------------------*/
 			break;
 		}
 		
@@ -83,7 +44,19 @@ public class Tile {
 	}
 	
 //	/// Getters and Setters ///
-
+	public void setTileBiome(tileBiome biome){
+		this.biome = biome;
+	}
+	public tileBiome getTileBiome(){
+		return biome;
+	}
+	public void setTileType(tileType type){
+		this.type = type;
+	}
+	public tileType getTileType(){
+		return type;
+	}
+	
 	public Entity getOccupant() {
 		return occupant;
 	}
@@ -106,14 +79,6 @@ public class Tile {
 
 	public void setOccupied(boolean occupied) {
 		this.occupied = occupied;
-	}
-
-	public int getType() {
-		return type;
-	}
-	
-	public void setType(int type) {
-		this.type = type;
 	}
 
 	public int getxCoord() {
