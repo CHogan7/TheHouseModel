@@ -8,11 +8,7 @@ public class Entity {
 	public static final double DIVISION_RATE = 2.0;
 	public static final int DEATH_VALUE = 0;
 	public static final double BASE_MOD = 1.0;
-//	/// Direction Values ///
-	public static final int NORTH = 0;
-	public static final int EAST = 1;
-	public static final int SOUTH = 2;
-	public static final int WEST = 3;
+	
 //	/// Properties & Stats ///
 	private String name;
 	private int hostile;
@@ -157,7 +153,6 @@ public class Entity {
 	/**
 	 * The equals method now facilitates friend-or-foe designation.
 	 * Determining enemies this way allows for several factions to exist.
-	 * Because chaos! >:D
 	 */
 	public boolean equals(Object object) {
 		Entity entity;
