@@ -7,7 +7,6 @@ public class Tile {
 	private Entity occupant;
 	private boolean passable;
 	private boolean occupied;
-	private int type;
 	private int xCoord;
 	private int yCoord;
 	private tileBiome biome;
@@ -21,8 +20,10 @@ public class Tile {
 	 * This can be changed if the setup is undesirable with little effort.
 	 * Doors can be made to "unlock", upon reaching certain criteria, by setting their passable value to true.
 	 */
-	public Tile(tileType type, tileBiome biome; int xCoord, int yCoord) throws InvalidTileException {
+	public Tile(int xCoord, int yCoord, tileBiome biome, tileType type) {
 		
+		this.setOccupant(NONE);
+		this.setOccupied(false);
 		this.setxCoord(xCoord);
 		this.setyCoord(yCoord);
 		this.setTileBiome(biome);
@@ -30,15 +31,14 @@ public class Tile {
 		
 		switch(type){
 		case tileType.FLOOR:
+			this.setPassable(true);
+			
+			break;
 		case tileType.WALL:
 		case tileType.DOOR:
-		/*-------------------------------fix this --------------------------------------------------------*/
-			break;
-		}
-		
-		if (this.getOccupant() == null) {
-			throw new InvalidTileException();
+			this.setPassable(false);
 			
+			break;
 		}
 		
 	}
