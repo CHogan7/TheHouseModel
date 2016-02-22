@@ -40,7 +40,6 @@ public class Tile {
 			
 			break;
 		}
-		
 	}
 	
 //	/// Getters and Setters ///
@@ -96,5 +95,5 @@ public class Tile {
 	public void setyCoord(int yCoord) {
 		this.yCoord = yCoord;
 	}
-
+	
 }
