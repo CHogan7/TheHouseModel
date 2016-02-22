@@ -42,7 +42,6 @@ public class Entity {
 		this.setName("None");
 		this.setHostile(0);
 		this.setAlive(false);
-		
 	}
 	
 	/**
@@ -77,7 +76,6 @@ public class Entity {
 		this.setWeaponSpdMod(BASE_MOD);
 		this.setArmorSpdMod(BASE_MOD);
 		this.setAccSpdMod(BASE_MOD);
-		
 	}
 	
 	/**
@@ -95,9 +93,7 @@ public class Entity {
 			setAtk((int)(getAtk() + (getAtk() * (Math.random() / DIVISION_RATE))));
 			setDef((int)(getDef() + (getDef() * (Math.random() / DIVISION_RATE))));
 			setSpd((int)(getSpd() + (getSpd() * (Math.random() / DIVISION_RATE))));
-			
 		}
-		
 	}
 	
 	/**
@@ -107,9 +103,7 @@ public class Entity {
 	 */
 	public void addExp(Entity foe) {
 		int exp = DEFAULT_EXP + (foe.getAtk() / getAtk()) + (foe.getDef() / getDef()) + (foe.getSpd() / getSpd());
-		
 		setExp(getExp() + exp);
-		
 	}
 	
 	/**
@@ -128,7 +122,6 @@ public class Entity {
 		
 		if (dmg <= 0) {
 			dmg = 1;
-			
 		}
 		
 		foe.setHealth(foe.getHealth() - dmg);
@@ -136,9 +129,7 @@ public class Entity {
 		if (foe.getHealth() <= DEATH_VALUE) {
 			foe.setAlive(false);
 			addExp(foe);
-			
 		}
-		
 	}
 	
 	/**
@@ -147,7 +138,6 @@ public class Entity {
 	 */
 	public void updateDirection() {
 		// It got late I didn't have time to code this you get the gist
-		
 	}
 	
 	/**
@@ -162,7 +152,6 @@ public class Entity {
 			
 			return isHostile() == entity.isHostile();
 		}
-		
 		return false;
 	}
 	
@@ -170,7 +159,6 @@ public class Entity {
 	 * Allows for the display of a player's basic stats for a status panel.
 	 */
 	public String toString() {
-		
 		return getName() + ": Lv" + getLevel() + " HP:" + getHealth() + "/" + getHealthMax();
 	}
 	
