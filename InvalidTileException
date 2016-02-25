@@ -2,6 +2,4 @@ package com.neumont.csc150.exceptions;
 
 public class InvalidTileException extends Exception {
 	private static final long serialVersionUID = 1L;
-	// I'll flesh this out later
-
 }
