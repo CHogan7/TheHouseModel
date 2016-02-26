@@ -1,6 +1,13 @@
 package com.neumont.csc150.model;
 
 public class Entity {
+	private static final Entity SMALL_EXP = new Entity("", 0, 500, 500, 500, 500);
+	private static final Entity MEDIUM_EXP = new Entity("", 0, 1250, 1250, 1250, 1250);
+	private static final Entity LARGE_EXP = new Entity("", 0, 3125, 3125, 3125, 3125);
+	private static final int SMALL_HEAL = 500;
+	private static final int MEDIUM_HEAL = 1250;
+	private static final int LARGE_HEAL = 3125;
+	public static final Entity NONE = new Entity();
 	public static final int STARTING_LEVEL = 0;
 	public static final int STARTING_EXP = 0;
 	public static final int DEFAULT_EXP = 1;
@@ -130,6 +137,87 @@ public class Entity {
 			foe.setAlive(false);
 			addExp(foe);
 		}
+	}
+	
+	/**
+	 * Consumes an item and applies its effects to the Entity.
+	 * Healing Items ensure that the Entity's HP cannot be overfilled.
+	 * @param item
+	 */
+	public void useItem(Item item) {
+		itemType type = item.getType();
+		item.setUsed(true);
+		
+		switch (type) {
+		case WEAPON:
+			Equip equipW = (Equip)item;
+			this.setWeaponAtkMod(equipW.getAtkMod());
+			this.setWeaponDefMod(equipW.getDefMod());
+			this.setWeaponSpdMod(equipW.getSpdMod());
+			
+			break;
+		case ARMOR:
+			Equip equipA = (Equip)item;
+			this.setArmorAtkMod(equipA.getAtkMod());
+			this.setArmorDefMod(equipA.getDefMod());
+			this.setArmorSpdMod(equipA.getSpdMod());
+			
+			break;
+		case ACCESSORY:
+			Equip equipAc = (Equip)item;
+			this.setAccAtkMod(equipAc.getAtkMod());
+			this.setAccDefMod(equipAc.getDefMod());
+			this.setAccSpdMod(equipAc.getSpdMod());
+			
+			break;
+		case HEAL:
+			HealItem heal = (HealItem)item;
+			
+			switch (heal.getSize()) {
+			case SMALL:
+				this.setHealth(this.getHealth() + SMALL_HEAL);
+				
+				break;
+			case MEDIUM:
+				this.setHealth(this.getHealth() + MEDIUM_HEAL);
+				
+				break;
+			case LARGE:
+				this.setHealth(this.getHealth() + LARGE_HEAL);
+				
+				break;
+			}
+			
+			if (this.getHealth() > this.getHealthMax()) {
+				this.setHealth(this.getHealthMax());
+				
+			}
+			
+			break;
+		case EXP:
+			ExpItem exp = (ExpItem)item;
+			
+			switch (exp.getSize()) {
+			case SMALL:
+				this.addExp(SMALL_EXP);
+				
+				break;
+			case MEDIUM:
+				this.addExp(MEDIUM_EXP);
+				
+				break;
+			case LARGE:
+				this.addExp(LARGE_EXP);
+				
+				break;
+			}
+			
+			break;
+		default:
+			throw new InvalidItemException();
+		
+		}
+		
 	}
 	
 	/**
