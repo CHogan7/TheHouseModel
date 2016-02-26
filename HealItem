@@ -1,0 +1,23 @@
+package com.neumont.csc150.model;
+
+public class HealItem extends Item {
+	Size size;
+	
+	public HealItem(String name, Size size) {
+		this.setType(itemType.HEAL);
+		this.setName(name);
+		this.setSize(size);
+		
+	}
+	
+//	/// Getters & Setters ///
+
+	public Size getSize() {
+		return size;
+	}
+
+	public void setSize(Size size) {
+		this.size = size;
+	}
+
+}
