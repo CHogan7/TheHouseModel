@@ -1,0 +1,44 @@
+package com.neumont.csc150.model;
+
+public class Equip extends Item {
+	private double atkMod;
+	private double defMod;
+	private double spdMod;
+	
+	public Equip(itemType type, String name, double atkMod, double defMod, double spdMod) {
+		this.setType(type);
+		this.setName(name);
+		this.setUsed(false);
+		this.setAtkMod(atkMod);
+		this.setDefMod(defMod);
+		this.setSpdMod(spdMod);
+		
+	}
+	
+//	/// Getters & Setters ///
+	
+	public double getAtkMod() {
+		return atkMod;
+	}
+	
+	public void setAtkMod(double atkMod) {
+		this.atkMod = atkMod;
+	}
+	
+	public double getDefMod() {
+		return defMod;
+	}
+	
+	public void setDefMod(double defMod) {
+		this.defMod = defMod;
+	}
+	
+	public double getSpdMod() {
+		return spdMod;
+	}
+	
+	public void setSpdMod(double spdMod) {
+		this.spdMod = spdMod;
+	}
+
+}
