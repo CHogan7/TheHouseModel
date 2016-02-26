@@ -1,0 +1,35 @@
+package com.neumont.csc150.model;
+
+public abstract class Item {
+	public static final Item NO_ITEM = new PlaceHolderItem();
+	private itemType type;
+	private String name;
+	private boolean used;
+	
+//	/// Getters & Setters ///
+
+	public itemType getType() {
+		return type;
+	}
+
+	public void setType(itemType type) {
+		this.type = type;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public boolean isUsed() {
+		return used;
+	}
+
+	public void setUsed(boolean used) {
+		this.used = used;
+	}
+
+}
