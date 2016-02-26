@@ -1,0 +1,6 @@
+package com.neumont.csc150.model;
+
+public class InvalidItemException extends RuntimeException {
+	private static final long serialVersionUID = 1L;
+
+}
