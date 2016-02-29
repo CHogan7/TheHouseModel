@@ -1,0 +1,204 @@
+package com.neumont.csc150.model;
+
+public class Room {
+	public static final int ROOMMAX_X = 13;
+	public static final int ROOMMAX_Y = 13;
+	private static final int LEFTDOOR_X = 0;
+	private static final int LEFTDOOR_Y = ROOMMAX_Y / 2;
+	private static final int TOPDOOR_X = ROOMMAX_X / 2;
+	private static final int TOPDOOR_Y = 0;
+	private static final int RIGHTDOOR_X = ROOMMAX_X - 1;
+	private static final int RIGHTDOOR_Y = ROOMMAX_Y / 2;
+	private static final int BOTTOMDOOR_X = ROOMMAX_X / 2;
+	private static final int BOTTOMDOOR_Y = ROOMMAX_Y - 1;
+	private Tile[][] tiles = new Tile[ROOMMAX_X][ROOMMAX_Y];
+	private tileBiome biome;
+	private roomType type;
+	private int spawnX;
+	private int spawnY;
+	private int exitX;
+	private int exitY;
+	private int roomNumber;
+	
+	public Room(tileBiome biome, roomType type, int roomNumber) {
+		this.setBiome(biome);
+		this.setType(type);
+		this.setRoomNumber(roomNumber);
+		
+		for (int xIndex = 0; xIndex < ROOMMAX_X; xIndex++) {
+			for (int yIndex = 0; yIndex < ROOMMAX_Y; yIndex++) {
+				
+				if (xIndex == 0 || xIndex == ROOMMAX_X - 1) {
+					this.tiles[xIndex][yIndex] = new Tile(xIndex, yIndex, this.getBiome(), tileType.WALL);
+					
+				}
+				else if (yIndex == 0 || yIndex == ROOMMAX_Y - 1) {
+					this.tiles[xIndex][yIndex] = new Tile(xIndex, yIndex, this.getBiome(), tileType.WALL);
+					
+				}
+				else {
+					this.tiles[xIndex][yIndex] = new Tile(xIndex, yIndex, this.getBiome(), tileType.FLOOR);
+					
+				}
+				
+			}
+			
+		}
+		
+		switch (this.getType()) {
+		case bottomLeft:
+			this.setSpawnX(BOTTOMDOOR_X);
+			this.setSpawnY(BOTTOMDOOR_Y);
+			this.setExitX(LEFTDOOR_X);
+			this.setExitY(LEFTDOOR_Y);
+			
+			break;
+		case bottomTop:
+			this.setSpawnX(BOTTOMDOOR_X);
+			this.setSpawnY(BOTTOMDOOR_Y);
+			this.setExitX(TOPDOOR_X);
+			this.setExitY(TOPDOOR_Y);
+			
+			break;
+		case bottomRight:
+			this.setSpawnX(BOTTOMDOOR_X);
+			this.setSpawnY(BOTTOMDOOR_Y);
+			this.setExitX(RIGHTDOOR_X);
+			this.setExitY(RIGHTDOOR_Y);
+			
+			break;
+		case leftTop:
+			this.setSpawnX(LEFTDOOR_X);
+			this.setSpawnY(LEFTDOOR_Y);
+			this.setExitX(TOPDOOR_X);
+			this.setExitY(TOPDOOR_Y);
+			
+			break;
+		case leftRight:
+			this.setSpawnX(LEFTDOOR_X);
+			this.setSpawnY(LEFTDOOR_Y);
+			this.setExitX(RIGHTDOOR_X);
+			this.setExitY(RIGHTDOOR_Y);
+			
+			break;
+		case leftBottom:
+			this.setSpawnX(LEFTDOOR_X);
+			this.setSpawnY(LEFTDOOR_Y);
+			this.setExitX(BOTTOMDOOR_X);
+			this.setExitY(BOTTOMDOOR_Y);
+			
+			break;
+		case topRight:
+			this.setSpawnX(TOPDOOR_X);
+			this.setSpawnY(TOPDOOR_Y);
+			this.setExitX(RIGHTDOOR_X);
+			this.setExitY(RIGHTDOOR_Y);
+			
+			break;
+		case topBottom:
+			this.setSpawnX(TOPDOOR_X);
+			this.setSpawnY(TOPDOOR_Y);
+			this.setExitX(BOTTOMDOOR_X);
+			this.setExitY(BOTTOMDOOR_Y);
+			
+			break;
+		case topLeft:
+			this.setSpawnX(TOPDOOR_X);
+			this.setSpawnY(TOPDOOR_Y);
+			this.setExitX(LEFTDOOR_X);
+			this.setExitY(LEFTDOOR_Y);
+			
+			break;
+		case rightBottom:
+			this.setSpawnX(RIGHTDOOR_X);
+			this.setSpawnY(RIGHTDOOR_Y);
+			this.setExitX(BOTTOMDOOR_X);
+			this.setExitY(BOTTOMDOOR_Y);
+			
+			break;
+		case rightLeft:
+			this.setSpawnX(RIGHTDOOR_X);
+			this.setSpawnY(RIGHTDOOR_Y);
+			this.setExitX(LEFTDOOR_X);
+			this.setExitY(LEFTDOOR_Y);
+			
+			break;
+		case rightTop:
+			this.setSpawnX(RIGHTDOOR_X);
+			this.setSpawnY(RIGHTDOOR_Y);
+			this.setExitX(TOPDOOR_X);
+			this.setExitY(TOPDOOR_Y);
+			
+			break;
+		
+		}
+		
+		this.tiles[this.getSpawnX()][this.getSpawnY()] = new Tile(this.getSpawnX(), this.getSpawnY(), this.getBiome(), tileType.DOOR);
+		this.tiles[this.getExitX()][this.getExitY()] = new Tile(this.getExitX(), this.getExitY(), this.getBiome(), tileType.DOOR);
+		
+	}
+	
+	public void unlock() {
+		this.tiles[this.getExitX()][this.getExitY()].setPassable(true);
+		
+	}
+	
+//	/// Getters and Setters ///
+
+	public tileBiome getBiome() {
+		return biome;
+	}
+
+	public void setBiome(tileBiome biome) {
+		this.biome = biome;
+	}
+
+	public roomType getType() {
+		return type;
+	}
+
+	public void setType(roomType type) {
+		this.type = type;
+	}
+
+	public int getSpawnX() {
+		return spawnX;
+	}
+
+	public void setSpawnX(int spawnX) {
+		this.spawnX = spawnX;
+	}
+
+	public int getSpawnY() {
+		return spawnY;
+	}
+
+	public void setSpawnY(int spawnY) {
+		this.spawnY = spawnY;
+	}
+
+	public int getExitX() {
+		return exitX;
+	}
+
+	public void setExitX(int exitX) {
+		this.exitX = exitX;
+	}
+
+	public int getExitY() {
+		return exitY;
+	}
+
+	public void setExitY(int exitY) {
+		this.exitY = exitY;
+	}
+	
+	public int getRoomNumber() {
+		return roomNumber;
+	}
+	
+	public void setRoomNumber(int roomNumber) {
+		this.roomNumber = roomNumber;
+	}
+
+}
