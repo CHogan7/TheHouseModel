@@ -1,0 +1,17 @@
+package com.neumont.csc150.model;
+
+public enum roomType {
+	bottomLeft,
+	bottomTop,
+	bottomRight,
+	leftTop,
+	leftRight,
+	leftBottom,
+	topRight,
+	topBottom,
+	topLeft,
+	rightBottom,
+	rightLeft,
+	rightTop;
+
+}
