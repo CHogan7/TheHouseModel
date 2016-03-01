@@ -28,11 +28,7 @@ public class Room {
 		for (int xIndex = 0; xIndex < ROOMMAX_X; xIndex++) {
 			for (int yIndex = 0; yIndex < ROOMMAX_Y; yIndex++) {
 				
-				if (xIndex == 0 || xIndex == ROOMMAX_X - 1) {
-					this.tiles[xIndex][yIndex] = new Tile(xIndex, yIndex, this.getBiome(), tileType.WALL);
-					
-				}
-				else if (yIndex == 0 || yIndex == ROOMMAX_Y - 1) {
+				if (xIndex == 0 || xIndex == ROOMMAX_X - 1 || yIndex == 0 || yIndex == ROOMMAX_Y - 1) {
 					this.tiles[xIndex][yIndex] = new Tile(xIndex, yIndex, this.getBiome(), tileType.WALL);
 					
 				}
