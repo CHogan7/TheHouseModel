@@ -2,5 +2,6 @@ public enum tileBiome{
   FOREST,
   MOUNTAIN,
   CAVERN,
-  URBAN,;
+  URBAN,
+  FINAL;
 }
