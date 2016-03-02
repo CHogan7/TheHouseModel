@@ -1,0 +1,10 @@
+currLevel
+maxHealth
+currHealth
+# of items
+<-- Item List -->
+currRoom
+currRoomState
+currRoomPosition
+currEnemyPosition
+currEnemyHealth
