@@ -1,8 +1,9 @@
 package com.neumont.csc150.model;
 
 public class Room {
-	public static final int ROOMMAX_X = 13;
-	public static final int ROOMMAX_Y = 13;
+	public static final int ROOMMAX_X = 11;
+	public static final int ROOMMAX_Y = 11;
+	public static final int PADDING = 2;
 	private static final int LEFTDOOR_X = 0;
 	private static final int LEFTDOOR_Y = ROOMMAX_Y / 2;
 	private static final int TOPDOOR_X = ROOMMAX_X / 2;
@@ -28,7 +29,11 @@ public class Room {
 		for (int xIndex = 0; xIndex < ROOMMAX_X; xIndex++) {
 			for (int yIndex = 0; yIndex < ROOMMAX_Y; yIndex++) {
 				
-				if (xIndex == 0 || xIndex == ROOMMAX_X - 1 || yIndex == 0 || yIndex == ROOMMAX_Y - 1) {
+				if (xIndex == 0 || xIndex == ROOMMAX_X - 1) {
+					this.tiles[xIndex][yIndex] = new Tile(xIndex, yIndex, this.getBiome(), tileType.WALL);
+					
+				}
+				else if (yIndex == 0 || yIndex == ROOMMAX_Y - 1) {
 					this.tiles[xIndex][yIndex] = new Tile(xIndex, yIndex, this.getBiome(), tileType.WALL);
 					
 				}
