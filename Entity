@@ -93,13 +93,13 @@ public class Entity {
 		int remainder = getExp() - LEVELUP_VALUE;
 		
 		if (getExp() >= LEVELUP_VALUE) {
-			setLevel(getLevel() + 1);
-			setExp(remainder);
-			setHealthMax((int)(getHealthMax() + (getHealthMax() * (Math.random() / 2))));
-			setHealth(getHealthMax());
-			setAtk((int)(getAtk() + (getAtk() * (Math.random() / DIVISION_RATE))));
-			setDef((int)(getDef() + (getDef() * (Math.random() / DIVISION_RATE))));
-			setSpd((int)(getSpd() + (getSpd() * (Math.random() / DIVISION_RATE))));
+			this.setLevel(getLevel() + 1);
+			this.setExp(remainder);
+			this.setHealthMax((int)(getHealthMax() + (getHealthMax() * (Math.random() / DIVISION_RATE))));
+			this.setHealth(getHealthMax());
+			this.setAtk((int)(getAtk() + (getAtk() * (Math.random() / DIVISION_RATE))));
+			this.setDef((int)(getDef() + (getDef() * (Math.random() / DIVISION_RATE))));
+			this.setSpd((int)(getSpd() + (getSpd() * (Math.random() / DIVISION_RATE))));
 		}
 	}
 	
@@ -110,7 +110,7 @@ public class Entity {
 	 */
 	public void addExp(Entity foe) {
 		int exp = DEFAULT_EXP + (foe.getAtk() / getAtk()) + (foe.getDef() / getDef()) + (foe.getSpd() / getSpd());
-		setExp(getExp() + exp);
+		this.setExp(getExp() + exp);
 	}
 	
 	/**
@@ -123,8 +123,8 @@ public class Entity {
 		int eSpd = (int)(getSpd() * getWeaponSpdMod() * getArmorSpdMod() * getAccSpdMod());
 		int fDef = (int)(foe.getDef() * foe.getWeaponDefMod() * foe.getArmorDefMod() * foe.getAccDefMod());
 		int fSpd = (int)(foe.getSpd() * foe.getWeaponSpdMod() * foe.getArmorSpdMod() * foe.getAccSpdMod());
-		int pow = (eAtk + eSpd);
-		int res = (fDef + fSpd);
+		int pow = (eAtk * (eSpd/fSpd));
+		int res = (fDef * (fSpd/eSpd));
 		int dmg = getAtk() - (res - pow);
 		
 		if (dmg <= 0) {
