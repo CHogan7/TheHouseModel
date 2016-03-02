@@ -1,0 +1,16 @@
+entity class
+  void attack(entity other)
+  {
+    damage calculation for enemy first
+    if enemy does not die
+      enemy counterattack
+  }
+  
+  void move()
+  {
+  
+  }
+  key_event keypressed{
+    based on which key is pressed, move in a direction using move()
+  }
+  
