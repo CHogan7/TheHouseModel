@@ -1,10 +1,8 @@
 package com.neumont.csc150.model;
 
-import com.neumont.csc150.exceptions.InvalidTileException;
-
 public class Tile {
-	public static final Entity NONE = new Entity();
 	private Entity occupant;
+	private Item item;
 	private boolean passable;
 	private boolean occupied;
 	private int xCoord;
@@ -22,7 +20,8 @@ public class Tile {
 	 */
 	public Tile(int xCoord, int yCoord, tileBiome biome, tileType type) {
 		
-		this.setOccupant(NONE);
+		this.setOccupant(Entity.NONE);
+		this.setItem(Item.NO_ITEM);
 		this.setOccupied(false);
 		this.setxCoord(xCoord);
 		this.setyCoord(yCoord);
@@ -30,12 +29,12 @@ public class Tile {
 		this.setTileType(type);
 		
 		switch(type){
-		case tileType.FLOOR:
+		case FLOOR:
 			this.setPassable(true);
 			
 			break;
-		case tileType.WALL:
-		case tileType.DOOR:
+		case WALL:
+		case DOOR:
 			this.setPassable(false);
 			
 			break;
@@ -62,6 +61,14 @@ public class Tile {
 
 	public void setOccupant(Entity occupant) {
 		this.occupant = occupant;
+	}
+	
+	public Item getItem() {
+		return item;
+	}
+	
+	public void setItem(Item item) {
+		this.item = item;
 	}
 
 	public boolean isPassable() {
