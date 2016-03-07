@@ -92,7 +92,7 @@ public class Entity {
 	public void checkExp() {
 		int remainder = getExp() - LEVELUP_VALUE;
 		
-		if (getExp() >= LEVELUP_VALUE) {
+		while (getExp() >= LEVELUP_VALUE) {
 			this.setLevel(getLevel() + 1);
 			this.setExp(remainder);
 			this.setHealthMax((int)(getHealthMax() + (getHealthMax() * (Math.random() / DIVISION_RATE))));
@@ -119,10 +119,10 @@ public class Entity {
 	 * @param foe
 	 */
 	public void attack(Entity foe) {
-		int eAtk = (int)(getAtk() * getWeaponAtkMod() * getArmorAtkMod() * getAccAtkMod());
-		int eSpd = (int)(getSpd() * getWeaponSpdMod() * getArmorSpdMod() * getAccSpdMod());
-		int fDef = (int)(foe.getDef() * foe.getWeaponDefMod() * foe.getArmorDefMod() * foe.getAccDefMod());
-		int fSpd = (int)(foe.getSpd() * foe.getWeaponSpdMod() * foe.getArmorSpdMod() * foe.getAccSpdMod());
+		int eAtk = (int)(this.getAtk() * this.getAtkMod());
+		int eSpd = (int)(this.getSpd() * this.getSpdMod());
+		int fDef = (int)(foe.getDef() * foe.getDefMod());
+		int fSpd = (int)(foe.getSpd() * foe.getSpdMod());
 		int pow = (eAtk * (eSpd/fSpd));
 		int res = (fDef * (fSpd/eSpd));
 		int dmg = getAtk() - (res - pow);
@@ -130,12 +130,11 @@ public class Entity {
 		if (dmg <= 0) {
 			dmg = 1;
 		}
-		
 		foe.setHealth(foe.getHealth() - dmg);
 		
 		if (foe.getHealth() <= DEATH_VALUE) {
 			foe.setAlive(false);
-			addExp(foe);
+			this.addExp(foe);
 		}
 	}
 	
@@ -221,14 +220,6 @@ public class Entity {
 	}
 	
 	/**
-	 * Method that allows for the game to keep track of which direction a character is facing.
-	 * Only valuable if AOE or direction-based mechanics are implemented.
-	 */
-	public void updateDirection() {
-		// It got late I didn't have time to code this you get the gist
-	}
-	
-	/**
 	 * The equals method now facilitates friend-or-foe designation.
 	 * Determining enemies this way allows for several factions to exist.
 	 */
@@ -238,7 +229,7 @@ public class Entity {
 		if (object instanceof Entity) {
 			entity = (Entity)object;
 			
-			return isHostile() == entity.isHostile();
+			return this.getHostile() == entity.getHostile();
 		}
 		return false;
 	}
@@ -247,12 +238,13 @@ public class Entity {
 	 * Allows for the display of a player's basic stats for a status panel.
 	 */
 	public String toString() {
-		return getName() + ": Lv" + getLevel() + " HP:" + getHealth() + "/" + getHealthMax();
+		return this.getName() + ": Lv" + this.getLevel() + " HP:" + this.getHealth() + "/" + this.getHealthMax() +
+				" Attack:" + (this.getAtk() * this.getAtkMod()) + " Defense:" + (this.getDef() * this.getDefMod()) +
+				" Speed:" + (this.getSpd() + this.getSpdMod());
 	}
 	
 //	/// Getters and Setters ///
 //	// Properties
-	
 	public String getName() {
 		return name;
 	}
@@ -261,7 +253,7 @@ public class Entity {
 		this.name = name;
 	}
 	
-	public int isHostile() {
+	public int getHostile() {
 		return hostile;
 	}
 	
@@ -278,7 +270,6 @@ public class Entity {
 	}
 	
 //	// Stats
-	
 	public int getLevel() {
 		return level;
 	}
@@ -342,6 +333,10 @@ public class Entity {
 	public void setAccAtkMod(double accAtkMod) {
 		this.accAtkMod = accAtkMod;
 	}
+	
+	public double getAtkMod() {
+		return this.getWeaponAtkMod() + this.getArmorAtkMod() + this.getAccAtkMod();
+	}
 
 	public int getDef() {
 		return def;
@@ -373,6 +368,10 @@ public class Entity {
 
 	public void setAccDefMod(double accDefMod) {
 		this.accDefMod = accDefMod;
+	}
+	
+	public double getDefMod() {
+		return this.getWeaponDefMod() * this.getArmorDefMod() * this.getAccDefMod();
 	}
 
 	public int getSpd() {
@@ -407,8 +406,10 @@ public class Entity {
 		this.accSpdMod = accSpdMod;
 	}
 	
+	public double getSpdMod() {
+		return this.getWeaponSpdMod() * this.getArmorSpdMod() * this.getAccSpdMod();
+	}
 //	// Position
-
 	public int getxCoord() {
 		return xCoord;
 	}
