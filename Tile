@@ -32,12 +32,10 @@ public class Tile {
 		switch(type){
 		case tileType.FLOOR:
 			this.setPassable(true);
-			
 			break;
 		case tileType.WALL:
 		case tileType.DOOR:
 			this.setPassable(false);
-			
 			break;
 		}
 	}
