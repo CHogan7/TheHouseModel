@@ -31,12 +31,10 @@ public class Tile {
 		switch(type){
 		case FLOOR:
 			this.setPassable(true);
-			
 			break;
 		case WALL:
 		case DOOR:
 			this.setPassable(false);
-			
 			break;
 		}
 	}
