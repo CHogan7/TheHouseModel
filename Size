@@ -1,6 +1,6 @@
 package com.neumont.csc150.model;
 
-public enum Size {
+public enum size {
 	SMALL,
 	MEDIUM,
 	LARGE;
