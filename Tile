@@ -5,8 +5,6 @@ public class Tile {
 	private Item item;
 	private boolean passable;
 	private boolean occupied;
-	private int xCoord;
-	private int yCoord;
 	private tileBiome biome;
 	private tileType type;
 	
@@ -86,21 +84,4 @@ public class Tile {
 	public void setOccupied(boolean occupied) {
 		this.occupied = occupied;
 	}
-
-	public int getxCoord() {
-		return xCoord;
-	}
-
-	public void setxCoord(int xCoord) {
-		this.xCoord = xCoord;
-	}
-
-	public int getyCoord() {
-		return yCoord;
-	}
-
-	public void setyCoord(int yCoord) {
-		this.yCoord = yCoord;
-	}
-	
 }
