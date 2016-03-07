@@ -145,6 +145,10 @@ public class Room {
 	}
 	
 //	/// Getters and Setters ///
+	
+	public Tile getTile(int x, int y) {
+		return tiles[x][y];
+	}
 
 	public tileBiome getBiome() {
 		return biome;
